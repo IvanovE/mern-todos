@@ -3,15 +3,12 @@ import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import {TEXT} from "../constants/TEXT"
-import {useLoginMutation} from "../store/api/authApi"
+import {useLoginMutation} from "../store/api/appApi"
 import {Controller, useForm} from "react-hook-form"
 import {useHistory} from "react-router-dom"
 import {toast} from "react-toastify"
 
 const styles = {
-  title: {
-    marginTop: '2rem'
-  },
   errors: {
     color: 'red'
   },
@@ -41,7 +38,7 @@ export const Login = () => {
 
   return (
     <Container maxWidth="xs">
-      <Typography component="h1" variant="h5" sx={styles.title}>
+      <Typography component="h1" variant="h5">
         {TEXT.login}
       </Typography>
 

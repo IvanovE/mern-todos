@@ -4,5 +4,6 @@ export const TEXT = {
   todos: 'Todos',
   signup: 'Sign Up',
   login: 'Login',
-  logout: 'Logout'
+  logout: 'Logout',
+  createTodo: 'Create ToDo'
 }

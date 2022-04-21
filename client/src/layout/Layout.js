@@ -4,7 +4,8 @@ import {Footer} from "./Footer"
 const styles = {
   content: {
     flexGrow: 1,
-    minHeight: `calc(100vh - 200px)`
+    minHeight: `calc(100vh - 200px)`,
+    marginTop: '2rem'
   }
 }
 

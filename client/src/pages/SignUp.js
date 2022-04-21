@@ -3,15 +3,12 @@ import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 import {TEXT} from "../constants/TEXT"
-import {useRegisterMutation} from '../store/api/authApi'
+import {useRegisterMutation} from '../store/api/appApi'
 import {useForm, Controller} from "react-hook-form"
 import {useHistory} from "react-router-dom"
 import {toast} from "react-toastify"
 
 const styles = {
-  title: {
-    marginTop: '2rem'
-  },
   errors: {
     color: 'red'
   },
@@ -41,7 +38,7 @@ export const SignUp = () => {
 
   return (
     <Container maxWidth="xs">
-      <Typography component="h1" variant="h5" sx={styles.title}>
+      <Typography component="h1" variant="h5">
         {TEXT.signup}
       </Typography>
 

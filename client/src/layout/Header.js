@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem"
 import {TEXT} from "../constants/TEXT"
 import {Link} from "react-router-dom"
 import {useSelector} from "react-redux"
-import {useLogoutMutation} from "../store/api/authApi"
+import {useLogoutMutation} from "../store/api/appApi"
 
 const styles = {
   flexGrow: {

@@ -1,8 +1,8 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 import {signIn, logout} from '../slices/authSlice'
 
-export const authApi = createApi({
-  reducerPath: 'authApi',
+export const appApi = createApi({
+  reducerPath: 'appApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5000/api',
     prepareHeaders: (headers, {getState}) => {
@@ -36,17 +36,52 @@ export const authApi = createApi({
     }),
 
     logout: build.mutation({
-      query: () =>  ({
+      query: () => ({
         url: '/logout',
-        method: 'POST',
-        credentials: 'include'
+        method: 'POST'
       }),
       async onQueryStarted(arg, {dispatch, queryFulfilled}) {
         await queryFulfilled
         dispatch(logout())
       }
+    }),
+
+    create: build.mutation({
+      query: (todo) => ({
+        url: '/create',
+        method: 'POST',
+        body: todo
+      })
+    }),
+
+    getTodos: build.query({
+      query: () =>  '/todos'
+    }),
+
+    changeRating: build.mutation({
+      query: (body) => ({
+        url: '/change-rating',
+        method: 'POST',
+        body
+      })
+    }),
+
+    changeStatus: build.mutation({
+      query: (body) => ({
+        url: '/change-status',
+        method: 'POST',
+        body
+      })
     })
   })
 })
 
-export const {useRegisterMutation, useLoginMutation, useLogoutMutation} = authApi
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useCreateMutation,
+  useGetTodosQuery,
+  useChangeRatingMutation,
+  useChangeStatusMutation
+} = appApi
