@@ -3,13 +3,18 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import MenuItem from "@mui/material/MenuItem"
-import {TEXT} from "../constants/TEXT"
+import {text} from "../constants/text"
 import {Link} from "react-router-dom"
 import {useSelector} from "react-redux"
 import {useLogoutMutation} from "../store/api/appApi"
+import {HEADER_HEIGHT} from "../constants/styles"
 
 const styles = {
-  flexGrow: {
+  header: {
+    flexGrow: 1,
+    height: HEADER_HEIGHT
+  },
+  flexGrow : {
     flexGrow: 1
   }
 }
@@ -19,31 +24,31 @@ export const Header = () => {
   const [logout] = useLogoutMutation()
 
   return (
-    <Box sx={styles.flexGrow}>
+    <Box sx={styles.header}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={styles.flexGrow}>
-            <Link to={'/'}>{TEXT.title}</Link>
+            <Link to={'/'}>{text.barTitle}</Link>
           </Typography>
           {!isSignedIn &&
             <>
               <Link to={'/login'}>
-                <MenuItem>{TEXT.login}</MenuItem>
+                <MenuItem>{text.login}</MenuItem>
               </Link>
               <Link to={'/signup'}>
-                <MenuItem>{TEXT.signup}</MenuItem>
+                <MenuItem>{text.signup}</MenuItem>
               </Link>
             </>
           }
           {isSignedIn &&
             <>
               <Link to={'/create'}>
-                <MenuItem>{TEXT.create}</MenuItem>
+                <MenuItem>{text.create}</MenuItem>
               </Link>
               <Link to={'/todos'}>
-                <MenuItem>{TEXT.todos}</MenuItem>
+                <MenuItem>{text.todos}</MenuItem>
               </Link>
-              <MenuItem onClick={logout}>{TEXT.logout}</MenuItem>
+              <MenuItem onClick={logout}>{text.logout}</MenuItem>
             </>
           }
         </Toolbar>

@@ -1,12 +1,8 @@
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
-import Typography from "@mui/material/Typography"
-import {TEXT} from "../constants/TEXT"
+import {TextField, Button, Container, Typography, Box} from "@mui/material"
+import {text} from "../constants/text"
 import {useRegisterMutation} from '../store/api/appApi'
 import {useForm, Controller} from "react-hook-form"
 import {useHistory} from "react-router-dom"
-import {toast} from "react-toastify"
 
 const styles = {
   errors: {
@@ -17,29 +13,30 @@ const styles = {
   }
 }
 
+const defaultFormValues = {
+  email: '',
+  password: ''
+}
+
 export const SignUp = () => {
   const [register] = useRegisterMutation()
   const history = useHistory()
   const { handleSubmit, control, formState: { errors } } = useForm({
-    defaultValues: {
-      email: '',
-      password: ''
-    }
+    defaultValues: defaultFormValues
   })
 
   const onSubmit = async (data) => {
-    const response = await register(data)
-    if (response.error) {
-      return toast.error(response.error?.data?.message || 'Invalid credentials')
+    const {error} = await register(data)
+    if (error) {
+      return
     }
-    toast.success(response.message || 'Account created!')
     history.push('/login')
   }
 
   return (
     <Container maxWidth="xs">
       <Typography component="h1" variant="h5">
-        {TEXT.signup}
+        {text.signup}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -67,10 +64,10 @@ export const SignUp = () => {
         />
 
         {errors?.email &&
-          <div style={styles.errors}>
+          <Box sx={styles.errors}>
             {errors?.email?.type === 'required' && "Email is required"}
             {errors?.email?.type === 'pattern' && "Must be an email"}
-          </div>
+          </Box>
         }
 
         <Controller
@@ -97,11 +94,11 @@ export const SignUp = () => {
         />
 
         {errors?.password &&
-          <div style={styles.errors}>
+          <Box sx={styles.errors}>
             {errors?.password?.type === 'required' && "Password is required"}
             {errors?.password?.type === 'minLength' && "Password minimum length is 6"}
             {errors?.password?.type === 'maxLength' && "Password maximum length is 24"}
-          </div>
+          </Box>
         }
 
         <Button
@@ -111,7 +108,7 @@ export const SignUp = () => {
           color="primary"
           sx={styles.btn}
         >
-          {TEXT.signup}
+          {text.signup}
         </Button>
       </form>
     </Container>

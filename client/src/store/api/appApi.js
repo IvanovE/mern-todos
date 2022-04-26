@@ -1,18 +1,30 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 import {signIn, logout} from '../slices/authSlice'
+import {createTodo} from "../slices/actionsSlice"
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: 'http://localhost:5000/api',
+  prepareHeaders: (headers, {getState}) => {
+    const {auth: {accessToken}} = getState()
+    if (accessToken) {
+      headers.set('authorization', `Bearer ${accessToken}`)
+    }
+    return headers
+  }
+})
+
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+  let result = await baseQuery(args, api, extraOptions)
+  if (result.error && result.error.status === 401) {
+    api.dispatch(logout())
+  }
+  return result
+}
 
 export const appApi = createApi({
   reducerPath: 'appApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api',
-    prepareHeaders: (headers, {getState}) => {
-      const {auth: {accessToken}} = getState()
-      if (accessToken) {
-        headers.set('authorization', `Bearer ${accessToken}`)
-      }
-      return headers
-    }
-  }),
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ['Todo'],
   endpoints: (build) => ({
     register: build.mutation({
       query: (credentials) => ({
@@ -51,11 +63,21 @@ export const appApi = createApi({
         url: '/create',
         method: 'POST',
         body: todo
-      })
+      }),
+      invalidatesTags: ['Todo'],
+      async onQueryStarted(arg, {dispatch, queryFulfilled, getCacheEntry}) {
+        await queryFulfilled
+        const response = getCacheEntry().data
+        dispatch(createTodo(response))
+      }
     }),
 
     getTodos: build.query({
-      query: () =>  '/todos'
+      query: () =>  '/todos',
+      providesTags: (result) =>
+        result
+          ? [...result.map(({ id }) => ({ type: 'Todo', id })), 'Todo']
+          : ['Todo']
     }),
 
     changeRating: build.mutation({

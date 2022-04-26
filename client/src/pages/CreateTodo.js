@@ -1,11 +1,10 @@
 import Container from "@mui/material/Container"
-import {Rating, TextField} from "@mui/material"
+import {Box, Rating, TextField} from "@mui/material"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
-import {TEXT} from "../constants/TEXT"
+import {text} from "../constants/text"
 import {Controller, useForm} from "react-hook-form"
-import {toast} from "react-toastify"
-import {useCreateMutation} from "../store/api/appApi";
+import {useCreateMutation} from "../store/api/appApi"
 
 const styles = {
   errors: {
@@ -23,26 +22,27 @@ const styles = {
   }
 }
 
+const defaultFormValues = {
+  title: '',
+  description: '',
+  rating: 1
+}
+
 export const CreateTodo = () => {
   const [createTodo] = useCreateMutation()
   const { handleSubmit, reset, control, formState: { errors } } = useForm({
-    defaultValues: {
-      title: '',
-      description: '',
-      rating: 1
-    }
+    defaultValues: defaultFormValues
   })
 
   const onSubmit = (data) => {
     createTodo(data)
     reset()
-    toast.success('ToDo Created!')
   }
 
   return (
     <Container maxWidth="xs">
       <Typography component="h1" variant="h5">
-        {TEXT.createTodo}
+        {text.createTodo}
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Controller
@@ -66,9 +66,9 @@ export const CreateTodo = () => {
           }
         />
         {errors?.title &&
-          <div style={styles.errors}>
+          <Box sx={styles.errors}>
             {errors?.title?.type === 'required' && "Title is required"}
-          </div>
+          </Box>
         }
         <Controller
           name='description'
@@ -91,11 +91,11 @@ export const CreateTodo = () => {
           }
         />
         {errors?.description &&
-          <div style={styles.errors}>
-            {errors?.description?.type === 'required' && "Description is required"}
-          </div>
+          <Box sx={styles.errors}>
+            {errors.description?.type === 'required' && "Description is required"}
+          </Box>
         }
-        <div style={styles.rating}>
+        <Box sx={styles.rating}>
           <Typography component="legend">Set rating for the task</Typography>
           <Controller
             name='rating'
@@ -108,7 +108,7 @@ export const CreateTodo = () => {
               />
             }
           />
-        </div>
+        </Box>
         <Button
           type="submit"
           fullWidth
@@ -116,7 +116,7 @@ export const CreateTodo = () => {
           color="primary"
           sx={styles.mt}
         >
-          {TEXT.create}
+          {text.create}
         </Button>
       </form>
     </Container>

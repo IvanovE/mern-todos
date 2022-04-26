@@ -1,5 +1,4 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {toast} from "react-toastify"
 
 const initialState = {
   isSignedIn: false,
@@ -17,6 +16,8 @@ const authSlice = createSlice({
       }
     },
 
+    signUp: () => {},
+
     signIn: (state, {payload}) => {
       if (payload.accessToken) {
         state.accessToken = payload.accessToken
@@ -27,10 +28,9 @@ const authSlice = createSlice({
     logout: (state) => {
       state.accessToken = null
       state.isSignedIn = false
-      toast.success('Transition to the dark side completed...')
     }
   }
 })
 
 export const authReducer = authSlice.reducer
-export const {signIn, logout, initAuth} = authSlice.actions
+export const {signIn, signUp, logout, initAuth} = authSlice.actions

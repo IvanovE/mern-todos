@@ -1,12 +1,8 @@
-import TextField from "@mui/material/TextField"
-import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
-import Typography from "@mui/material/Typography"
-import {TEXT} from "../constants/TEXT"
+import {TextField, Button, Container, Typography, Box} from "@mui/material"
+import {text} from "../constants/text"
 import {useLoginMutation} from "../store/api/appApi"
 import {Controller, useForm} from "react-hook-form"
 import {useHistory} from "react-router-dom"
-import {toast} from "react-toastify"
 
 const styles = {
   errors: {
@@ -17,29 +13,30 @@ const styles = {
   }
 }
 
+const defaultFormValues = {
+  email: '',
+  password: ''
+}
+
 export const Login = () => {
   const [login] = useLoginMutation()
   const history = useHistory()
   const { handleSubmit, control, formState: { errors } } = useForm({
-    defaultValues: {
-      email: '',
-      password: ''
-    }
+    defaultValues: defaultFormValues
   })
 
   const onSubmit = async (data) => {
     const {error} = await login(data)
     if (error) {
-      return toast.error(error.data?.message || 'Invalid credentials')
+      return
     }
-    toast.success('Welcome!!!')
     history.replace('/')
   }
 
   return (
     <Container maxWidth="xs">
       <Typography component="h1" variant="h5">
-        {TEXT.login}
+        {text.login}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -67,10 +64,10 @@ export const Login = () => {
         />
 
         {errors?.email &&
-          <div style={styles.errors}>
+          <Box sx={styles.errors}>
             {errors?.email?.type === 'required' && "Email is required"}
             {errors?.email?.type === 'pattern' && "Must be an email"}
-          </div>
+          </Box>
         }
 
         <Controller
@@ -93,9 +90,9 @@ export const Login = () => {
         />
 
         {errors?.password &&
-          <div style={styles.errors}>
+          <Box sx={styles.errors}>
             {errors?.password?.type === 'required' && "Password is required"}
-          </div>
+          </Box>
         }
 
         <Button
@@ -105,7 +102,7 @@ export const Login = () => {
           color="primary"
           sx={styles.btn}
         >
-          {TEXT.login}
+          {text.login}
         </Button>
       </form>
     </Container>

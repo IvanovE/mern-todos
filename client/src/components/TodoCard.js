@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   Paper,
   Rating,
@@ -49,7 +50,7 @@ export const TodoCard = ({id, title, description, rating, status}) => {
 
   return (
     <Paper elevation={3} sx={styles.card}>
-      <div>
+      <Box>
         <Typography component="h1" variant="h5" sx={styles.mb}>
           {title}
         </Typography>
@@ -61,7 +62,7 @@ export const TodoCard = ({id, title, description, rating, status}) => {
           value={rat}
           onChange={handleRatingChange}
         />
-      </div>
+      </Box>
       <FormControl sx={styles.select}>
         <Select
           inputProps={{ 'aria-label': 'Without label' }}
